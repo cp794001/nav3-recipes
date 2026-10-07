@@ -23,3 +23,22 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.hilt) apply false
 }
+fun createIncomingCallAttributes(
+    callerName: String,
+    callerNumber: String,
+    isVideoCall: Boolean): CallAttributesCompat {
+    val addressUri = Uri.parse("YourAppScheme:$callerNumber")
+
+    // Define capabilities supported by your call.
+    val callCapabilities = CallAttributesCompat.CallCapability(
+        supportsSetInactive = CallAttributesCompat.SUPPORTS_SET_INACTIVE // Call can be made inactive (implies hold)
+    )
+
+    return CallAttributesCompat(
+        displayName = callerName,
+        address = addressUri,
+        direction = CallAttributesCompat.DIRECTION_INCOMING,
+        callType = if (isVideoCall) CallAttributesCompat.CALL_TYPE_VIDEO_CALL else CallAttributesCompat.CALL_TYPE_AUDIO_CALL,
+        callCapabilitiesCompat = callCapabilities
+    )
+}https://github.com/android/platform-samples/blob/main/samples%2Fconnectivity%2Ftelecom%2FREADME.md
